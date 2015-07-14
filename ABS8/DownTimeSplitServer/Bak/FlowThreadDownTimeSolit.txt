@@ -1,0 +1,116 @@
+#region Editor：Hyram ContentABS8停机切分算法
+                    lstScheduleDowntime = queryhelper.QueryScheduleDowntime(line, flowproduction.RealEndTime, dtCurrentTime);
+                    lstUnscheDowntime = queryhelper.QueryUnScheduleDowntime(line, flowproduction.RealEndTime, dtCurrentTime);
+                    DataTable SplitTab = timehelper.GetTimeTableForABS8(lstScheduleDowntime, lstUnscheDowntime, line, flowproduction.RealEndTime, dtCurrentTime);
+
+                    DataTable UnschduleTab = SplitTab.Clone();
+                    foreach (DataRow row in SplitTab.Rows)
+                    {
+                        if (row[downcode].ToString() != string.Empty && row[downcode].ToString().Contains(U))
+                        {
+                            UnschduleTab.Rows.Add(row.ItemArray);
+                        }
+                    }
+
+                    ListUnScheduleDownTime lstUnscheduleSplit = new ListUnScheduleDownTime();
+                    foreach (DataRow row in UnschduleTab.Rows)
+                    {
+                        string SqlGetProduct = SELECT TOP 1  FROM tbPro_Production WHERE LineId= + line.Id +  AND RealStartTime=' + row[starttime].ToString() + ' ORDER BY RealStartTime DESC;
+                        Production production = DALLibProduction.DataAccess.GetOneBySQL(SqlGetProduct);
+                        string SqlGetStation = SELECT  FROM tbDic_Station WHERE Id= + row[stationid] + ;
+                        Station station = DALLibStation.DataAccess.GetOneBySQL(SqlGetStation);
+                        DateTime StartTime = (DateTime)row[starttime];
+                        DateTime EndTime = (DateTime)row[endtime];
+                        decimal downtimeseconds = 0;
+                        if (lstStation.FindAll(p = (p.StationStep == station.StationStep && p.WorkStationId == station.WorkStationId)).Count  1)
+                        {并联设备
+                            DataRow[] unschdulerow = UnschduleTab.Select(stationstep=' + station.StationStep + ' and workstationid=' + station.WorkStationId + ' and starttime=' + StartTime + ' and endtime=' + EndTime + ');
+                            if (unschdulerow != null && unschdulerow.Length = 1)
+                            {
+                                停机了多少台设备
+                                int DownCount = unschdulerow.Length;
+                                查找算子
+                                string SqlGetGroupOperator = SELECT Top 1  FROM tbDic_Product_Group_CT WHERE WorkStationId= + station.WorkStationId +  AND StationStep= + station.StationStep +  AND GroupDownCount= + DownCount +  AND ProductId= + production.ProductId + ;
+                                Product_Group_CT pgc = DALLibProduct_Group_CT.DataAccess.GetOneBySQL(SqlGetGroupOperator);
+                                downtimeseconds = (decimal)EndTime.Subtract(StartTime).TotalSeconds;
+                                downtimeseconds = downtimeseconds  pgc.GroupOperator;
+                            }
+                        }
+                        else
+                        {串联设备
+                            string SqlGetStationOperator = SELECT Top 1  FROM tbDic_Product_Station_CT WHERE StationId= + station.Id +  AND ProductId= + production.ProductId + ;
+                            Product_Station_CT psc = DALLibProduct_Station_CT.DataAccess.GetOneBySQL(SqlGetStationOperator);
+                            downtimeseconds = (decimal)EndTime.Subtract(StartTime).TotalSeconds;
+                            downtimeseconds = downtimeseconds  psc.Operator;
+                        }
+                        EndTime = StartTime.AddSeconds((double)downtimeseconds);
+                        if (lstUnscheduleSplit != null && lstUnscheduleSplit.Count  0)
+                        {
+                            UnScheduleDownTime ud = new UnScheduleDownTime
+                            {
+                                Id = CommonMethod.SafeGetIntFromObj(row[id], 0),
+                                DefectCategoryId = CommonMethod.SafeGetIntFromObj(row[defectcategoryid], 0),
+                                StartTime = StartTime,
+                                EndTime = EndTime,
+                                ReactionTime = CommonMethod.SafeGetDateTimeFromObj(row[reactiontime]),
+                                ActionTime = CommonMethod.SafeGetDateTimeFromObj(row[actiontime]),
+                                EmployeeId = CommonMethod.SafeGetIntFromObj(row[employeeid], 0),
+                                StationId = CommonMethod.SafeGetIntFromObj(row[stationid], 0),
+                                IsChangedPart = CommonMethod.SafeGetBooleanFromObj(row[ischangedpart]),
+                            };
+                            #region
+                            for (int i = 0; i  lstUnscheduleSplit.Count; i++)
+                            {
+                                if (ud.StartTime == lstUnscheduleSplit[i].StartTime)
+                                {
+                                    decimal downtimecount = (decimal)lstUnscheduleSplit[i].EndTime.Subtract(lstUnscheduleSplit[i].StartTime).TotalSeconds;
+                                    if (downtimecount  timecount)
+                                    {
+                                        lstUnscheduleSplit.Remove(lstUnscheduleSplit[i]);
+                                        lstUnscheduleSplit.Add(ud);
+                                    }
+                                }
+                            }
+                            #endregion
+                            lstUnscheduleSplit.Add(ud);
+                            ListUnScheduleDownTime lstSameStartTime = lstUnscheduleSplit.FindAll(p = p.StartTime == ud.StartTime);
+                            if (lstSameStartTime.Count  1)
+                            {
+                                decimal timecount = (decimal)ud.EndTime.Subtract(ud.StartTime).TotalSeconds;
+                                for (int i = 0; i  lstSameStartTime.Count; i++)
+                                {
+                                    decimal downtimecount = (decimal)lstSameStartTime[i].EndTime.Subtract(lstSameStartTime[i].StartTime).TotalSeconds;
+                                    if (timecount  downtimecount)
+                                    {
+                                        lstUnscheduleSplit.Remove(lstUnscheduleSplit.Find(p = p.EndTime == lstSameStartTime[i].EndTime));
+                                        break;
+                                    }
+                                    else if(timecount==downtimecount)
+                                    {
+                                        lstUnscheduleSplit.Remove(lstUnscheduleSplit.Find(p = p.EndTime == lstSameStartTime[i].EndTime));
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            lstUnscheduleSplit.Add(new UnScheduleDownTime
+                            {
+                                Id = CommonMethod.SafeGetIntFromObj(row[id], 0),
+                                DefectCategoryId = CommonMethod.SafeGetIntFromObj(row[defectcategoryid], 0),
+                                StartTime = StartTime,
+                                EndTime = EndTime,
+                                ReactionTime = CommonMethod.SafeGetDateTimeFromObj(row[reactiontime]),
+                                ActionTime = CommonMethod.SafeGetDateTimeFromObj(row[actiontime]),
+                                EmployeeId = CommonMethod.SafeGetIntFromObj(row[employeeid], 0),
+                                StationId = CommonMethod.SafeGetIntFromObj(row[stationid], 0),
+                                IsChangedPart = CommonMethod.SafeGetBooleanFromObj(row[ischangedpart]),
+                            });
+                        }
+                    }
+                    经过和算子计算的停机时间，停机时间会有所变动，变动后再次放入方法中排序
+                    SplitTab = timehelper.GetTimeTableForABS8(lstScheduleDowntime, lstUnscheduleSplit, line, flowproduction.RealEndTime, dtCurrentTime);
+                    去掉重复停机段
+                    SplitTab = timehelper.GetABS8SpiltTimeFromTable(SplitTab);
+                    #endregion
