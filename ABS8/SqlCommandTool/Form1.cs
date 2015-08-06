@@ -158,10 +158,14 @@ namespace SqlCommandTool
             //    MessageBox.Show("Success！\nEffect [" + Count + "] Rows!");
             //button2.Enabled = false;
 
-            string sql4 = @"update tbPro_HistoryProduction set RealEndTime='2015-06-24 23:22:00' where Id=36391
-            update tbPro_HistoryProduction set RealEndTime='2015-06-25 06:59:59' where Id=36417";
-            if (ExcuteSQL(sql4))
-                MessageBox.Show("Success！\nEffect [" + Count + "] Rows!");
+            //string sql4 = @"update tbPro_HistoryProduction set RealEndTime='2015-06-24 23:22:00' where Id=36391
+            //update tbPro_HistoryProduction set RealEndTime='2015-06-25 06:59:59' where Id=36417";
+            //if (ExcuteSQL(sql4))
+            //    MessageBox.Show("Success！\nEffect [" + Count + "] Rows!");
+
+            string sql5 = @"ALTER TABLE tbFlowProduction ALTER Column PlanedCT decimal(8,2)";
+            ExcuteSQL(sql5);
+            MessageBox.Show("Success！");
             button2.Enabled = false;
         }
     }
