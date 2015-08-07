@@ -27,7 +27,7 @@ namespace OracleConnectionTool
 
             conn.Open();
 
-            OracleCommand cmd = new OracleCommand("SELECT * FROM PRODUCTION", conn);
+            OracleCommand cmd = new OracleCommand("SELECT * FROM dept", conn);
             OracleDataAdapter adpt = new OracleDataAdapter(cmd);
 
             DataSet dt = new DataSet();
@@ -42,12 +42,13 @@ namespace OracleConnectionTool
         private void button2_Click(object sender, EventArgs e)
         {
             OracleDALLib dal = new OracleDALLib("StrConn");
+            DataTable tab = dal.Query("SELECT * FROM dept");
 
-            DataTable tab = dal.Query("SELECT COPRODUCTION.*,to_char(time,'yyyy-mm-dd hh24:mi:ss') AS TIMES FROM COPRODUCTION");
+            //DataTable tab = dal.Query("SELECT COPRODUCTION.*,to_char(time,'yyyy-mm-dd hh24:mi:ss') AS TIMES FROM COPRODUCTION");
 
             
             dataGridView1.DataSource = tab;
-            dataGridView1.Columns["TIMES"].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss";
+            //dataGridView1.Columns["TIMES"].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss";
         }
     }
 }
