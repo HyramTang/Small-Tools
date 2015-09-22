@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ABS9", "ABS9", "{ECF4DA43-A16E-47AA-A228-A495B3C138D0}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OracleDataAccess", "OracleDALLib\OracleDataAccess.csproj", "{60866E23-1A1B-49C1-B205-E97860F97FA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OracleToOracle", "ABS8\OracleToOracle\OracleToOracle\OracleToOracle.csproj", "{E68A18A1-F39C-4694-8729-BA85365C0089}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeCalculate", "TimeCalculate\TimeCalculate.csproj", "{6D9C0408-EBE4-4AF4-A805-B3FB707E498F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{E68A18A1-F39C-4694-8729-BA85365C0089}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E68A18A1-F39C-4694-8729-BA85365C0089}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E68A18A1-F39C-4694-8729-BA85365C0089}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D9C0408-EBE4-4AF4-A805-B3FB707E498F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D9C0408-EBE4-4AF4-A805-B3FB707E498F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D9C0408-EBE4-4AF4-A805-B3FB707E498F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D9C0408-EBE4-4AF4-A805-B3FB707E498F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,5 +80,6 @@ Global
 		{70D56AF6-3C81-4216-BC60-581692A8F5D1} = {341DFB76-6BAC-43FF-8C46-350F5AC36683}
 		{60866E23-1A1B-49C1-B205-E97860F97FA7} = {341DFB76-6BAC-43FF-8C46-350F5AC36683}
 		{E68A18A1-F39C-4694-8729-BA85365C0089} = {341DFB76-6BAC-43FF-8C46-350F5AC36683}
+		{6D9C0408-EBE4-4AF4-A805-B3FB707E498F} = {341DFB76-6BAC-43FF-8C46-350F5AC36683}
 	EndGlobalSection
 EndGlobal

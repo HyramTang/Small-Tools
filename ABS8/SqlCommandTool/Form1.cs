@@ -163,8 +163,42 @@ namespace SqlCommandTool
             //if (ExcuteSQL(sql4))
             //    MessageBox.Show("Success！\nEffect [" + Count + "] Rows!");
 
-            string sql5 = @"ALTER TABLE tbFlowProduction ALTER Column PlanedCT decimal(8,2)";
-            ExcuteSQL(sql5);
+            //string sql5 = @"ALTER TABLE tbFlowProduction ALTER Column PlanedCT decimal(8,2)";
+            //ExcuteSQL(sql5);
+
+            //string sql6 = @"alter table tbPro_Production add StaticCT decimal(18,2)";
+            //ExcuteSQL(sql6);
+
+            //DateTime dtNow=DateTime.Now;
+            //DateTime dtStart = new DateTime(dtNow.Year, dtNow.Month, dtNow.Day, 7, 0, 0);
+            //string sql7 = @"update tbPro_Production set 
+            //StaticCT=(select CycleTime from tbDic_Product_Line_CT where LineId=tbPro_Production.LineId and ProductId=tbPro_Production.ProductId)";
+            //ExcuteSQL(sql7);
+
+            //string sql8 = @"update tbPro_Production set 
+            //StaticCT=
+            //(case when 
+            //(select CycleTime from tbDic_Product_Line_CT where LineId=tbPro_Production.LineId and ProductId=tbPro_Production.ProductId)!='0'
+            //then
+            //(select CycleTime from tbDic_Product_Line_CT where LineId=tbPro_Production.LineId and ProductId=tbPro_Production.ProductId)
+            //else
+            //(select DefaultCT from tb_Rpt_Performance_Line_Target where LineId=tbPro_Production.LineId) end)";
+            //ExcuteSQL(sql8);
+
+            //string sql9 = @"alter table tbDic_COTRecord add IsDefaultTarget bit";
+            //ExcuteSQL(sql9);
+
+            //string sql10 = @"CREATE TABLE [dbo].[tbDic_COTargetDefault](
+	        //[Id] [int] IDENTITY(1,1) NOT NULL,
+	        //[LineId] [int] NULL,
+	        //[DefaultValue] [decimal](18, 2) NULL,
+            //CONSTRAINT [PK_tbDic_COTargetDefault] PRIMARY KEY CLUSTERED 
+            //([Id] ASC)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]) ON [PRIMARY]";
+            //ExcuteSQL(sql10);
+
+            string sql11 = "update tbDic_COTRecord set IsDefaultTarget='true' where COTarget=-1";
+            ExcuteSQL(sql11);
+
             MessageBox.Show("Success！");
             button2.Enabled = false;
         }

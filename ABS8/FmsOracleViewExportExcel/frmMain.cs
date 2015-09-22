@@ -101,7 +101,7 @@ namespace FmsOracleViewExportExcel
 
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {
-            string strTime = "select fmsh.auswdaten.* from fmsh.auswdaten WHERE (time>=to_date('{0}','yyyy-mm-dd hh24:mi:ss') and time<to_date('{1}','yyyy-mm-dd hh24:mi:ss')) and LINIENNR=66 and STATIONNR=40";
+            string strTime = "select fmsh.auswdaten.* from fmsh.auswdaten WHERE (time>=to_date('{0}','yyyy-mm-dd hh24:mi:ss') and time<to_date('{1}','yyyy-mm-dd hh24:mi:ss')) and LINIENNR=67 and STATIONNR=40";
             txtSqlCommand.Text = string.Format(strTime, dateTimePicker1.Value.ToString(), dateTimePicker2.Value.ToString());
         }
 

@@ -69,7 +69,7 @@ namespace ExcelDataImport
                 OracleDALLib DALLib = new OracleDALLib("StrConn");
                 foreach (DataRow row in ImportData.Rows)
                 {
-                    SqlInsert=@"INSERT INTO COPRODUCTION VALUES
+                    SqlInsert = @"INSERT INTO AUSWDATEN VALUES
                         ('" + row["THMID"] + "'," + row["LINIENNR"] + ",'" + row["LINIENNAME"] + "'," + row["STATIONNR"] + ",'" + row["STATIONNAME"] + "','" + row["NAME"] + "','" + row["WERT"] + "',to_date('" + row["TIME"] + "','yyyy-mm-dd hh24:mi:ss'))  ";
 
                     EffectRows+= DALLib.ExcuteIDU(SqlInsert);
