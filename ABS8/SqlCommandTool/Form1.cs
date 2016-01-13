@@ -175,29 +175,95 @@ namespace SqlCommandTool
             //StaticCT=(select CycleTime from tbDic_Product_Line_CT where LineId=tbPro_Production.LineId and ProductId=tbPro_Production.ProductId)";
             //ExcuteSQL(sql7);
 
-            //string sql8 = @"update tbPro_Production set 
-            //StaticCT=
-            //(case when 
-            //(select CycleTime from tbDic_Product_Line_CT where LineId=tbPro_Production.LineId and ProductId=tbPro_Production.ProductId)!='0'
-            //then
-            //(select CycleTime from tbDic_Product_Line_CT where LineId=tbPro_Production.LineId and ProductId=tbPro_Production.ProductId)
-            //else
-            //(select DefaultCT from tb_Rpt_Performance_Line_Target where LineId=tbPro_Production.LineId) end)";
+            //            string sql8 = @"update tbPro_Production set 
+            //            StaticCT=
+            //            (case when 
+            //            (select CycleTime from tbDic_Product_Line_CT where LineId=tbPro_Production.LineId and ProductId=tbPro_Production.ProductId)!='0'
+            //            then
+            //            (select CycleTime from tbDic_Product_Line_CT where LineId=tbPro_Production.LineId and ProductId=tbPro_Production.ProductId)
+            //            else
+            //            (select DefaultCT from tb_Rpt_Performance_Line_Target where LineId=tbPro_Production.LineId) end) WHERE StaticCT IS null";
             //ExcuteSQL(sql8);
 
             //string sql9 = @"alter table tbDic_COTRecord add IsDefaultTarget bit";
             //ExcuteSQL(sql9);
 
             //string sql10 = @"CREATE TABLE [dbo].[tbDic_COTargetDefault](
-	        //[Id] [int] IDENTITY(1,1) NOT NULL,
-	        //[LineId] [int] NULL,
-	        //[DefaultValue] [decimal](18, 2) NULL,
+            //[Id] [int] IDENTITY(1,1) NOT NULL,
+            //[LineId] [int] NULL,
+            //[DefaultValue] [decimal](18, 2) NULL,
             //CONSTRAINT [PK_tbDic_COTargetDefault] PRIMARY KEY CLUSTERED 
             //([Id] ASC)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]) ON [PRIMARY]";
             //ExcuteSQL(sql10);
 
-            string sql11 = "update tbDic_COTRecord set IsDefaultTarget='true' where COTarget=-1";
-            ExcuteSQL(sql11);
+            //string sql11 = "update tbDic_COTRecord set IsDefaultTarget='true' where COTarget=-1";
+
+            //string sql12 = "alter table tbDailyShiftInfo add MTD decimal(18, 4)";
+            //ExcuteSQL(sql12);
+
+            //string sql13 = @"CREATE TABLE [dbo].[tb_Alarm_OtherAlarmInterface](
+            //[Id] [int] IDENTITY(1,1) NOT NULL,
+            //[StartTime] [datetime] NULL,
+            //[HandlerStatus] [nvarchar](50) NULL,
+            //[CreateTime] [datetime] NULL,
+            //[LineName] [nvarchar](50) NULL,
+            //[StationName] [nvarchar](50) NULL,
+            //[DowntimeId] [int] NULL,
+            //CONSTRAINT [PK_tb_Alarm_OtherAlarmInterface] PRIMARY KEY CLUSTERED 
+            //(
+            //[Id] ASC
+            //)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+            //) ON [PRIMARY]
+            //            
+            //ALTER TABLE [dbo].[tb_Alarm_OtherAlarmInterface] ADD  CONSTRAINT [DF_tb_Alarm_OtherAlarmInterface_CreateTime]  DEFAULT (getdate()) FOR [CreateTime]
+            //            
+            //CREATE TABLE [dbo].[tb_Rpt_RegularTarget](
+            //[Id] [int] IDENTITY(1,1) NOT NULL,
+            //[RegularName] [nvarchar](50) NULL,
+            //[RegularTargetInfo] [decimal](18, 4) NULL,
+            //CONSTRAINT [PK_tb_Rpt_RegularTarget] PRIMARY KEY CLUSTERED 
+            //(
+            //[Id] ASC
+            //)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+            //) ON [PRIMARY]
+            //            
+            //alter table [dbo].[tbPro_UnScheduleDownTime]
+            //add  EmpConfirm nvarchar(50)
+            //            
+            //alter table [tbDic_DownCodeHandleInfo]
+            //add  [NeedLineLeaderConfirm] nvarchar(50)
+            //            
+            //update tbDic_Station set WorkStationId=
+            //(select top 1 Id From tbDic_WorkStation where WorkStationName='ST220' and LineId=4) 
+            //where StationName='ST220' AND LineId=4
+            //            
+            //            
+            //update tbDic_Station set WorkStationId=
+            //(select top 1 Id From tbDic_WorkStation where WorkStationName='ST205' and LineId=4) 
+            //where StationName='ST205' AND LineId=4";
+
+            //string sql14 = @"alter table [AndonForABS8].[dbo].tbPro_UnScheduleDownTime add ResetTime datetime
+            //alter table [DBAJAndon].[dbo].tbPro_UnScheduleDownTime add ResetTime datetime";
+
+            //string sql15 = @"alter table tbDic_DefectCategory add IsRemind bool";
+            //ExcuteSQL(sql15);
+
+            //string sql16 = @"Update tbPro_Production SET RealProductOutput=24 WHERE RealStartTime>='2015-11-22 17:11:00.000' AND RealEndTime<='2015/11/22 17:14:30' AND LineId=29";
+            //if (ExcuteSQL(sql16))
+            //    MessageBox.Show("Success！\nEffect [" + Count + "] Rows!");
+
+            //string sql17 = "delete from tb_Alarm_Trigger_Voice where TriggerSystem='SpotAlarm'";
+
+            //string sql18 = "INSERT tbDic_Spalte2 (Spalte2Letter,Spalte2Value,ECUProductId)values('B','023','3')";
+            //ExcuteSQL(sql18);
+
+            string sql19 = @"delete from tbPro_Production where ProductId in (select Id from tbDic_Product where ECU='1277' or ECU like 'A%')
+            delete  from tbDic_Product_Line_CT where ProductId in (select Id from tbDic_Product where ECU='1277' or ECU like 'A%')
+            delete  from tbDic_Product_Group_CT where ProductId in (select Id from tbDic_Product where ECU='1277' or ECU like 'A%')
+            delete  from tbDic_Product_Station_CT where ProductId in (select Id from tbDic_Product where ECU='1277' or ECU like 'A%')
+            delete from tbDic_Product where ECU='1277' or ECU like 'A%'";
+            ExcuteSQL(sql19);
+
 
             MessageBox.Show("Success！");
             button2.Enabled = false;
